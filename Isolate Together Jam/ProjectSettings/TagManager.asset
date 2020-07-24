@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - NPC
+  - Books
+  - Water
+  - CanofFood
+  - SafeZone
+  - Wall
+  - NotSick
+  - ToiletPaper
+  - Vaccine
+  - Dog
+  - Music
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - layer1
+  - Items
+  - Sickpeople
+  - camera
+  - NotSickPeople
+  - player
+  - PoweredUp
+  - DogShield
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
