@@ -6,7 +6,7 @@ public class Progressive : MonoBehaviour
 {
     private float latestDirectionChangeTime;
     private readonly float directionChangeTime = 3f;
-    public float characterVelocity = 100;
+    public float characterVelocity;
     private Vector2 movementDirection;
     private Vector2 movementPerSecond;
 
@@ -34,9 +34,11 @@ public class Progressive : MonoBehaviour
 
     public float SetTime;
     public float GoalTime;
-    public bool slowOrNot = false;
+    public float SlowedTime;
+    public static bool slowOrNot = false;
     public bool done;
     public bool start = false;
+    public float DefaultSlowedTime;
 
     void Start()
     {
@@ -44,7 +46,9 @@ public class Progressive : MonoBehaviour
 
         latestDirectionChangeTime = 0f;
         calcuateNewMovementVector();
-
+        slowOrNot = false;
+        characterVelocity = 100;
+        DefaultSlowedTime = SlowedTime;
         var randomInt = Random.Range(1, 8);
         zach = randomInt;
         if (zach == 1)
@@ -100,26 +104,28 @@ public class Progressive : MonoBehaviour
         //once player hits safeZone on layer1 than start movement
 
         start = Timer.startTime;
-        slowOrNot = Player.Slow;
 
-        if (start == true)
+ 
+        //if Player object hits a TimeFreeze make sick people and non sick speed slower
+        if (slowOrNot == true)
         {
-            characterVelocity = 100;
-
-            //if Player object hits a TimeFreeze make sick people and non sick speed slower
-            if (slowOrNot == true)
-            {
-                characterVelocity = 50;
-            }
-            else
-            {
-                characterVelocity = 100;
-            }
+            calcuateNewMovementVector();
+            characterVelocity = 0;
+            SlowedTime -= 1 * Time.deltaTime;
         }
         else
         {
-            characterVelocity = 0;
+           characterVelocity = 100;
         }
+
+        if (SlowedTime <= 0)
+        {
+            slowOrNot = false;
+            characterVelocity = 100;
+            calcuateNewMovementVector();
+            SlowedTime = DefaultSlowedTime;
+        }
+
 
 
         //move 

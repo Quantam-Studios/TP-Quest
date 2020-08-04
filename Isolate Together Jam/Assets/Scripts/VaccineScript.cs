@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class VaccineScript : MonoBehaviour
 {
+
     void OnCollisionEnter2D(Collision2D col)
     {
         if (col.collider.tag == "Player")

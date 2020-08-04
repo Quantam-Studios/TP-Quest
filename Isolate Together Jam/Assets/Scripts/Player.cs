@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public static float speed = 100;
+    public static float speed = 125;
     public Sprite sick;
     public Sprite Healthy;
     public GameObject GameOverMenu;
@@ -14,29 +14,36 @@ public class Player : MonoBehaviour
     public float GoalTime;
     public float SetTime;
     public bool GotVaccine = false;
-    public static bool Slow = false;
-    public float Norm;
+    public Color SickCol;
+    public static GameObject Dog;
+    public GameObject DogOBJ;
+    public GameObject Collider;
 
-    //powered by vaccine
-    public Sprite one;
-    public Sprite two;
-    public Sprite three;
-    public Sprite four;
-    public Sprite five;
-    public Sprite six;
-    public Sprite seven;
-    public Sprite eight;
-    public Sprite nine;
-    public Sprite ten;
-    public Sprite eleven;
-    public Sprite twelve;
+    //Customization
+    public GameObject HeadColor;
+    public GameObject JacketColor;
+    public GameObject ShirtColor;
+    public GameObject PantsColor;
+    public GameObject Face;
+    public Sprite SickFace;
+
+    public GameObject PowerUpTimer;
+
+    
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        PowerUpTimer.SetActive(false);
+        Dog = DogOBJ;
+        Collider.layer = 13;
         GameOver = false;
         GotVaccine = false;
+        HeadColor.GetComponent<SpriteRenderer>().color = PlayerCustomization.TrueFaceCol[PlayerCustomization.FaceActive];
+        JacketColor.GetComponent<SpriteRenderer>().color = PlayerCustomization.TrueJacketCol[PlayerCustomization.JacketActive];
+        ShirtColor.GetComponent<SpriteRenderer>().color = PlayerCustomization.TrueShirtCol[PlayerCustomization.ShirtActive];
+        PantsColor.GetComponent<SpriteRenderer>().color = PlayerCustomization.TruePantsCol[PlayerCustomization.PantsActive];
     }
 
     // Update is called once per frame
@@ -47,73 +54,18 @@ public class Player : MonoBehaviour
         if (GotVaccine == true)
         {
             gameObject.layer = 14;
+            Collider.layer = 14;
             GoalTime -= Time.deltaTime;
 
-            if (GoalTime >= 12 && GoalTime <= 15)
-            {
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = one;
-            }
-            if (GoalTime >= 11 && GoalTime < 12)
-            {
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = two;
-            }
-            if (GoalTime >= 10 && GoalTime < 11)
-            {
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = three;
-            }
-            if (GoalTime >= 9 && GoalTime < 10)
-            {
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = four;
-            }
-            if (GoalTime >= 8 && GoalTime < 9)
-            {
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = five;
-            }
-            if (GoalTime >= 7 && GoalTime < 8)
-            {
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = six;
-            }
-            if (GoalTime >= 6 && GoalTime < 7)
-            {
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = seven;
-            }
-            if (GoalTime >= 5 && GoalTime < 6)
-            {
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = eight;
-            }
-            if (GoalTime >= 4 && GoalTime < 5)
-            {
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = nine;
-            }
-            if (GoalTime >= 3 && GoalTime < 4)
-            {
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = ten;
-            }
-            if (GoalTime >= 2 && GoalTime < 3)
-            {
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = eleven;
-            }
-            if (GoalTime > 0 && GoalTime < 2)
-            {
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = twelve;
-            }
             if (GoalTime <= 0)
             {
                 GotVaccine = false;
                 gameObject.layer = 13;
+                Collider.layer = 13;
                 GoalTime = SetTime;
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = Healthy;
             }
         }
 
-        if (Slow == true)
-        {
-            Norm -= Time.deltaTime;
-            if(Norm <= 0)
-            {
-                Slow = false;
-            }
-        }
     }
 
 
@@ -127,7 +79,9 @@ public class Player : MonoBehaviour
     {
         if(col.collider.tag == "NPC")
         {
-            this.gameObject.GetComponent<SpriteRenderer>().sprite = sick;
+            HeadColor.GetComponent<SpriteRenderer>().color = SickCol;
+            Face.GetComponent<SpriteRenderer>().sprite = SickFace;
+            Debug.Log("SICK");
             Time.timeScale = 0;
             FinalScore.TimeScore = Timer.Score;
             FinalScore.tpscore = TPCounter.TPScore;
@@ -153,8 +107,26 @@ public class Player : MonoBehaviour
         if (col.collider.tag == "Vaccine")
         {
             GotVaccine = true;
+            PowerUpTimer.SetActive(true);
+            PowerUpTracker.CurrentPower = 0;
+            PowerUpTracker.time2 = SetTime;
         }
-        if(col.collider.tag == "SafeZone")
+
+        if (col.collider.tag == "TimeFreeze")
+        {
+            PowerUpTimer.SetActive(true);
+            PowerUpTracker.CurrentPower = 1;
+            PowerUpTracker.time2 = 10;
+        }
+
+        if (col.collider.tag == "PetDog")
+        {
+            PowerUpTimer.SetActive(true);
+            PowerUpTracker.CurrentPower = 2;
+            PowerUpTracker.time2 = 15;
+        }
+
+        if (col.collider.tag == "SafeZone")
         {
             Timer.startTime = true;
         }

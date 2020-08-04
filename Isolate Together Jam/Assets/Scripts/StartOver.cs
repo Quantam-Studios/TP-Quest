@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class StartOver : MonoBehaviour
 {
+    public int Scene;
     public void RestartGame()
     {
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene(Scene);
     }
 }

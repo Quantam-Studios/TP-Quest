@@ -15,6 +15,9 @@ TagManager:
   - Vaccine
   - Dog
   - Music
+  - PowerUpTimer
+  - TimeFreeze
+  - PetDog
   layers:
   - Default
   - TransparentFX

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TimeFreeze : MonoBehaviour
 {
+
+
     void OnCollisionEnter2D(Collision2D col)
     {
         if (col.collider.tag == "Player")
@@ -11,9 +13,10 @@ public class TimeFreeze : MonoBehaviour
             if (ItemOnOff.SoundEffects == false)
             {
                 FindObjectOfType<AudioManager>().Play("Tick");
-                Player.Slow = true;
             }
             PowerUp.PowerUpTaken = true;
+            Progressive.slowOrNot = true;
+            Sickpeople.slowOrNot = true;
             Destroy(gameObject);
         }
         if (col.collider.tag == "Dog")
@@ -21,10 +24,12 @@ public class TimeFreeze : MonoBehaviour
             if (ItemOnOff.SoundEffects == false)
             {
                 FindObjectOfType<AudioManager>().Play("Tick");
-                Player.Slow = true;
             }
             PowerUp.PowerUpTaken = true;
+            Progressive.slowOrNot = true;
+            Sickpeople.slowOrNot = true;
             Destroy(gameObject);
+
         }
     }
 }

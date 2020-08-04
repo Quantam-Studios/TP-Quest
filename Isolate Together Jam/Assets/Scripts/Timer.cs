@@ -17,19 +17,15 @@ public class Timer : MonoBehaviour
     {
         time = 0;
         timer = GetComponent<Text>();
-        startTime = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (startTime == true)
-        {
             time += Time.deltaTime;
             TimeSpan timeSpan = TimeSpan.FromSeconds(time);
             string timeText = string.Format("Time: {0:D2}:{1:D2}", timeSpan.Minutes, timeSpan.Seconds);
             timer.text = timeText;
-        }
         Score = time;
     }
 

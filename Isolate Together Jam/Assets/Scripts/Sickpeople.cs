@@ -6,7 +6,7 @@ public class Sickpeople : MonoBehaviour
 {
     private float latestDirectionChangeTime;
     private readonly float directionChangeTime = 3f;
-    public static float characterVelocity = 100;
+    public float characterVelocity = 100;
     private Vector2 movementDirection;
     private Vector2 movementPerSecond;
 
@@ -20,13 +20,18 @@ public class Sickpeople : MonoBehaviour
     public Sprite six;
     public Sprite seven;
     public Sprite eight;
-    public bool slowOrNot = false;
+    public float SlowedTime;
+    public float DefaultSlowedTime;
+    public static bool slowOrNot = false;
     public bool start = false;
 
     void Start()
     {
         latestDirectionChangeTime = 0f;
         calcuateNewMovementVector();
+        slowOrNot = false;
+        characterVelocity = 100;
+        DefaultSlowedTime = SlowedTime;
         //Random sprite chosen from Sprites one=eight
         var randomInt = Random.Range(1, 8);
         zach = randomInt;
@@ -84,25 +89,25 @@ public class Sickpeople : MonoBehaviour
         //once player hits safeZone on layer1 than start movement
 
         start = Timer.startTime;
-        slowOrNot = Player.Slow;
 
-        if (start == true)
+        //if Player object hits a TimeFreeze make sick people and non sick speed slower
+        if (slowOrNot == true)
         {
-            characterVelocity = 100;
-
-            //if Player object hits a TimeFreeze make sick people and non sick speed slower
-            if (slowOrNot == true)
-            {
-                characterVelocity = 50;
-            }
-            else
-            {
-                characterVelocity = 100;
-            }
+            calcuateNewMovementVector();
+            characterVelocity = 0;
+            SlowedTime -= 1 * Time.deltaTime;
         }
         else
         {
-            characterVelocity = 0;
+            characterVelocity = 100;
+        }
+
+        if (SlowedTime <= 0)
+        {
+            slowOrNot = false;
+            characterVelocity = 100;
+            calcuateNewMovementVector();
+            SlowedTime = DefaultSlowedTime;
         }
 
         //move 
